@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements
-    ColorPicker.OnColorChangedListener {
+
+public class MainActivity extends Activity implements ColorPicker.OnColorChangedListener {
+        ColorPicker p;
         /** Called when the activity is first created. */
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -17,28 +18,32 @@ public class MainActivity extends Activity implements
             setContentView(R.layout.activity_main);
             this.activity = this;
             final Button b = (Button) findViewById(R.id.button);
+            p = new ColorPicker(activity, MainActivity.this, Color.WHITE);
 
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    p.show();
                     TextView tx = (TextView) findViewById(R.id.textView);
                     ColorDrawable drawable = (ColorDrawable) b.getBackground();
-                    tx.setText("" + drawable.getColor());
+
                 }
             });
         }
 
         @Override
         public void colorChanged(int color) {
-             MainActivity.this.findViewById(android.R.id.content)
-                    .setBackgroundColor(color);
+             MainActivity.this.findViewById(android.R.id.content).setBackgroundColor(color);
+             TextView tx = (TextView) findViewById(R.id.textView);
+             tx.setText("(" + Color.red(color) + "," + Color.green(color) + "," + Color.blue(color) + ")");
+
         }
 
         Activity activity;
 
     public void getColor(View v) {
-        new ColorPicker(activity, MainActivity.this, Color.WHITE)
-                .show();
+        new ColorPicker(activity, MainActivity.this, Color.WHITE).show();
     }
+
+
 }
