@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PiApp.iml" filepath="$PROJECT_DIR$/PiApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/webandmobile.iml" filepath="$PROJECT_DIR$/webandmobile.iml" />
     </modules>
   </component>
 </project>

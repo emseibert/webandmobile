@@ -36,7 +36,19 @@
             android:textStyle="bold"
             android:clickable="true"
             android:enabled="true"
-            android:background="#ff2111ff" />
+            android:background="#ff000000"
+            android:onClick="getColor"
+            android:textColor="#ffffffff" />
+
+        <TextView
+            android:layout_width="205dp"
+            android:layout_height="37dp"
+            android:text="New Text"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView2"
+            android:layout_gravity="right|top"
+            android:gravity="center"/>
 
     </FrameLayout>
 
