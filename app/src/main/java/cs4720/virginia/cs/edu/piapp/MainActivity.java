@@ -2,6 +2,7 @@ package cs4720.virginia.cs.edu.piapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -49,18 +50,23 @@ public class MainActivity extends Activity  {
         populateList();
     }
 
-    /*
-        Should be used in Kristen's Add Light Show
+
+        //Should be used in Kristen's Add Light Show
     private void addToDB(String json, String name) {
+        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_JSON, json);
         values.put(COLUMN_NAME_TITLE, name);
 
         db.insert(TABLE_NAME, null,values);
+        db.close();
     }
-    */
+
 
     private void populateList() {
+        addToDB("hi there", "testing name");
+        clearDB(); //if you remove this method, 'testing name' will show instead of fake data
         FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
@@ -71,7 +77,6 @@ public class MainActivity extends Activity  {
         String[] list_values = getNames(numOfRows, c);
         c.close();
         db.close();
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, list_values);
 
@@ -172,12 +177,15 @@ public class MainActivity extends Activity  {
             return names.toArray(new String[names.size()]);
         }
     }
-//      Possibly use something like this when deleting a light show
-//      will clear database if necessary
-//
-//    private void clearDB() {
-//        db.delete(TABLE_NAME, null, null);
-//    }
+      //Possibly use something like this when deleting a light show
+     // will clear database if necessary
+
+    private void clearDB() {
+        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+        db.close();
+    }
 
     private void setButtonListeners() {
         final Button updateIpButton = (Button) findViewById(R.id.popupbutton);
