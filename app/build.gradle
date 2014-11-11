@@ -23,4 +23,5 @@ dependencies {
     compile 'org.apmem.tools:layouts:1.4@aar'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('/Users/kristen/AndroidStudioProjects/webandmobile/libs/hmkcode-http-lib.jar')
+    compile files('/Users/emilyseibert/AndroidStudioProjects/PiApp/libs/hmkcode-http-lib.jar')
 }
