@@ -2,9 +2,9 @@
 <resources>
 
     <string name="app_name">Pi App</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="ipAddr">Enter Ip Address:</string>
+    <string name="ipAddr">Current Ip Address: None</string>
     <string name="submit">Change Pi Color</string>
+    <string name="lightshow">Light Show</string>
+    <string name="add_new_light">+</string>
 
 </resources>
