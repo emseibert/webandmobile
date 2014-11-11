@@ -40,6 +40,20 @@
             android:onClick="getColor"
             android:textColor="#ffffffff" />
 
+        <Button
+            android:layout_width="254dp"
+            android:layout_height="109dp"
+            android:text="@string/submit2"
+            android:id="@+id/button2"
+            android:layout_gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:enabled="true"
+            android:background="#ff000000"
+            android:onClick="getColor"
+            android:textColor="#ffffffff" />
+
         <TextView
             android:layout_width="205dp"
             android:layout_height="37dp"

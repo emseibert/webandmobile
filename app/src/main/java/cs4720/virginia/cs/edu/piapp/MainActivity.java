@@ -1,12 +1,18 @@
 package cs4720.virginia.cs.edu.piapp;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.*;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.content.Intent;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,9 +39,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.app.AlertDialog;
 
 public class MainActivity extends Activity implements ColorPicker.OnColorChangedListener {
     ColorPicker p;
+    AddLightShow addLightShow;
+    AlertDialog.Builder builder;
+    AlertDialog alertDialog;
+
     int c;
     /** Called when the activity is first created. */
     @Override
@@ -44,7 +55,9 @@ public class MainActivity extends Activity implements ColorPicker.OnColorChanged
         setContentView(R.layout.activity_main);
         this.activity = this;
         final Button b = (Button) findViewById(R.id.button);
+        final Button b2 = (Button) findViewById(R.id.button2);
         p = new ColorPicker(activity, MainActivity.this, Color.WHITE);
+        addLightShow = new AddLightShow();
         if (isConnected()) {
             TextView tx = (TextView) findViewById(R.id.textView2);
             tx.setText("You are connected");
@@ -63,6 +76,14 @@ public class MainActivity extends Activity implements ColorPicker.OnColorChanged
 
             }
         });
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAddLightShow();
+
+            }
+        });
     }
 
     @Override
@@ -71,12 +92,16 @@ public class MainActivity extends Activity implements ColorPicker.OnColorChanged
         c = color;
         postData2();
     }
-
+    public void startAddLightShow() {
+        Intent someName = new Intent(MainActivity.this, AddLightShow.class);
+        startActivity(someName);
+    }
     Activity activity;
 
     public void getColor(View v) {
         new ColorPicker(activity, MainActivity.this, Color.WHITE).show();
     }
+
 
     public boolean isConnected(){
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
