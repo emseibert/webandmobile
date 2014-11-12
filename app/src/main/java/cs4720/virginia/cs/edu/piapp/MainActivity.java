@@ -2,16 +2,15 @@ package cs4720.virginia.cs.edu.piapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,20 +20,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
 
 import com.hmkcode.http.HttpHandler;
+
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Random;
+
 import static cs4720.virginia.cs.edu.piapp.FeedReaderContract.FeedEntry.COLUMN_NAME_JSON;
 import static cs4720.virginia.cs.edu.piapp.FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
 import static cs4720.virginia.cs.edu.piapp.FeedReaderContract.FeedEntry.TABLE_NAME;
@@ -71,14 +69,18 @@ public class MainActivity extends Activity {
                 Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
                 int numOfRows = c.getCount();
 
-                Random rand = new Random();
-                int randomListPosition = rand.nextInt(numOfRows);
-                c.moveToPosition(randomListPosition);
+                if (numOfRows > 0) {
+                    Random rand = new Random();
+                    int randomListPosition = rand.nextInt(numOfRows);
+                    c.moveToPosition(randomListPosition);
 
-                String json = c.getString(1);
-                makePostRequest(json);
-                Toast.makeText(getApplicationContext(), "Now Showing: " + c.getString(0), Toast.LENGTH_LONG)
-                        .show();
+                    String json = c.getString(1);
+                    makePostRequest(json);
+                    Toast.makeText(getApplicationContext(), "Now Showing: " + c.getString(0), Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Now", Toast.LENGTH_LONG).show();
+                }
                 c.close();
                 db.close();
             }
