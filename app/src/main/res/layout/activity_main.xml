@@ -6,71 +6,97 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
     android:background="#ffe9fffd">
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/layout"
-        android:background="#ffe9fffd">
+    <!--<FrameLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:id="@+id/layout"-->
+        <!--android:background="#ffe9fffd">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/lightshow"
-            android:id="@+id/textView2"
-            android:layout_gravity="center_horizontal|top"
-            android:textSize="50dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-        <TextView android:text="@string/ipAddr" android:layout_width="174dp"
-            android:layout_height="59dp"
-            android:id="@+id/textView"
-            android:textStyle="bold"
-            android:textIsSelectable="false"
-            android:textColor="#ff0c0c0c"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_gravity="left|top" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-        <ListView
-            android:id="@+id/list"
-            android:layout_marginTop="150dp"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-        </ListView>
+                <TextView android:text="@string/ipAddr" android:layout_width="174dp"
+                    android:layout_height="59dp"
+                    android:id="@+id/textView"
+                    android:textStyle="bold"
+                    android:textIsSelectable="false"
+                    android:textColor="#ff0c0c0c"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_gravity="left|top" />
 
-        <Button android:id="@+id/popupbutton"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="190dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="Update"
-            android:layout_gravity="left|top"
-            android:shadowColor="#ff808080"
-            android:textStyle="bold|normal"
-            android:typeface="normal"
-            android:background="#ff2f8eff"
-            android:textColor="#ffffffff"
-            android:padding="3dp" />
+                <Button android:id="@+id/popupbutton"
+                    android:layout_width="wrap_content"
 
-        <Button
-            android:layout_width="72dp"
-            android:layout_height="wrap_content"
-            android:text="@string/add_new_light"
-            android:layout_marginLeft="530dp"
-            android:layout_marginTop="70dp"
-            android:id="@+id/button_add_new_light"
-            android:layout_gravity="left|top"
-            android:textSize="50dp"
-            android:background="#ff2f8eff"
-            android:textColor="#ffffff" />
+                    android:layout_marginLeft="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Update"
+                    android:layout_gravity="left|top"
+                    android:shadowColor="#ff808080"
+                    android:textStyle="bold|normal"
+                    android:typeface="normal"
+                    android:background="#ff2f8eff"
+                    android:textColor="#ffffffff"
+                    android:padding="3dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/lightshow"
+                        android:id="@+id/textView2"
+                        android:layout_gravity="center_horizontal|top"
+                        android:textSize="50dp"
+                        android:layout_marginRight="15dp" />
 
 
-    </FrameLayout>
+                    <Button
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_new_light"
+                        android:layout_marginLeft="15dp"
+                        android:id="@+id/button_add_new_light"
+                        android:layout_gravity="left|top"
+                        android:textSize="50dp"
+                        android:background="#ff2f8eff"
+                        android:textColor="#ffffff" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ListView
+                    android:id="@+id/list"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+                </ListView>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    <!--</FrameLayout>-->
 
 </FrameLayout>

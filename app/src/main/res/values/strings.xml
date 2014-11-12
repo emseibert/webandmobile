@@ -6,5 +6,6 @@
     <string name="submit">Change Pi Color</string>
     <string name="lightshow">Light Show</string>
     <string name="add_new_light">+</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
