@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import com.hmkcode.http.HttpHandler;
 
@@ -47,6 +50,10 @@ public class MainActivity extends Activity  {
         setContentView(R.layout.activity_main);
         this.activity = this;
         setButtonListeners();
+        if (isConnected()) {
+//            TextView tx = (TextView) findViewById(R.id.textView2);
+//            tx.setBackgroundColor(Color.GREEN);
+        }
         populateList();
     }
 
@@ -65,8 +72,8 @@ public class MainActivity extends Activity  {
 
 
     private void populateList() {
-        addToDB("hi there", "testing name");
-        clearDB(); //if you remove this method, 'testing name' will show instead of fake data
+        //addToDB("hi there", "testing name");
+        //clearDB(); //if you remove this method, 'testing name' will show instead of fake data
         FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
@@ -95,17 +102,17 @@ public class MainActivity extends Activity  {
                 String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
                 String sortOrder =COLUMN_NAME_TITLE + " DESC";
                 Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
-                JSONObject json;
+                String json;
                 if (c.getCount() > 0) {
                     c.moveToPosition(position);
-                    json = parseJson(c.getString(1));
+                    json = c.getString(1);
                 } else {
-                    json = new JSONObject();
-                    try {
-                        json.put("test", "one");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    json = "";
+//                    try {
+//                        //json.put("test", "one");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
                 }
 
                 makePostRequest(json);
@@ -117,37 +124,40 @@ public class MainActivity extends Activity  {
     }
 
     public JSONObject parseJson(String json) {
+
+        try {
+            return new JSONObject(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return new JSONObject();
     }
 
-    public void makePostRequest(JSONObject json) {
+    public boolean isConnected(){
+    ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+    if (networkInfo != null && networkInfo.isConnected())
+        return true;
+    else
+        return false;
+    }
+
+    public void makePostRequest(final String json) {
         new HttpHandler() {
             @Override
             public HttpUriRequest getHttpRequestMethod() {
                 TextView tx = (TextView) findViewById(R.id.textView);
                 String url = tx.getText().toString().split("Current Ip Address: ")[1];
-                HttpPost p = new HttpPost("http://" + url + "/rpi");
+                //HttpPost p = new HttpPost("http://" + url + "/rpi");
+                HttpPost p = new HttpPost("http://requestb.in/1jfmjcw1");
                 p.addHeader("Content-type", "application/json");
 
-                try {
 
-                    JSONObject lightId = new JSONObject();
-                    lightId.put("lightId", 1);
-                    lightId.put("red", Color.red(255));
-                    lightId.put("green", Color.green(0));
-                    lightId.put("blue", Color.blue(0));
-                    lightId.put("intensity", 30);
-                    JSONArray lights = new JSONArray();
-                    lights.put(lightId);
-                    JSONObject main = new JSONObject();
-                    main.put("lights", lights);
-                    main.put("propagate", true);
-                    StringEntity se = new StringEntity(main.toString());
+                try {
+                    StringEntity se = new StringEntity(json);
                     se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,"application/json"));
                     p.setEntity(se);
                 } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -170,7 +180,7 @@ public class MainActivity extends Activity  {
             return fake_data;
         } else {
             for (int i = 0; i < numOfRows; i++) {
-                c.moveToPosition(0);
+                c.moveToPosition(i);
                 names.add(c.getString(0));
             }
 
@@ -210,8 +220,65 @@ public class MainActivity extends Activity  {
 
     private void addLightShow(View v) {
         //add connection to kristen's add light show activity
+        Intent someName = new Intent(this, AddLightShow.class);
+        startActivity(someName);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+        //Update List from Database
+        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
+        String sortOrder =COLUMN_NAME_TITLE + " DESC";
+        Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
+        final ListView listView = (ListView) findViewById(R.id.list);
+        int numOfRows = c.getCount();
+        String[] list_values = getNames(numOfRows, c);
+        c.close();
+        db.close();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, list_values);
+
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int itemPosition = position;
+                String itemValue = (String) listView.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(), "Now Showing: " + itemValue, Toast.LENGTH_LONG)
+                        .show();
+                FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
+                String sortOrder =COLUMN_NAME_TITLE + " DESC";
+                Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
+                String json;
+                if (c.getCount() > 0) {
+                    c.moveToPosition(position);
+                    json = c.getString(1);
+                } else {
+                    json = "";
+//                    try {
+//                        json.put("test", "one");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+                }
+
+                makePostRequest(json);
+
+                c.close();
+                db.close();
+            }
+        });
+
+
+    }
 
     private void openIpDialog(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);

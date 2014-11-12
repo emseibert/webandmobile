@@ -37,36 +37,7 @@
             android:id="@+id/flowlayout">
 
 
-        <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:id="@+id/btn_color1"
-            android:background="#ff124dff"
-            android:layout_gravity="bottom"
-
-            />
-
-        <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:id="@+id/btn_color2"
-                android:layout_marginLeft="30dp"
-                android:background="#ffff4e38"
-                android:layout_gravity="bottom"/>
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:id="@+id/btn_color3"
-            android:background="#ff5aff37"
-
-
-            android:layout_gravity="bottom" />
-
-        <Button
+            <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="90dp"
             android:layout_height="90dp"
@@ -86,7 +57,8 @@
                 android:checked="false"
                 android:textSize="40sp"
                 android:layout_marginTop="50dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+            android:visibility="invisible" />
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -95,7 +67,8 @@
                 android:id="@+id/chkBx_Blinking"
                 android:checked="false"
                 android:textSize="40sp"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal"
+            android:visibility="invisible" />
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -104,7 +77,8 @@
                 android:id="@+id/chkBx_Randomize"
                 android:checked="false"
                 android:textSize="40sp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+            android:visibility="invisible" />
 
         <RelativeLayout
             android:orientation="horizontal"

@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name=".AddLightShow"
-            android:label="@string/title_activity_add_light_show"
+            android:label="Add Light Show"
             >
 
         </activity>
