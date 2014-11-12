@@ -3,12 +3,15 @@ package cs4720.virginia.cs.edu.piapp;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +24,6 @@ import android.widget.Toast;
 import android.content.Intent;
 
 import com.hmkcode.http.HttpHandler;
-
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
@@ -30,17 +32,19 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-
+import java.util.Random;
 import static cs4720.virginia.cs.edu.piapp.FeedReaderContract.FeedEntry.COLUMN_NAME_JSON;
 import static cs4720.virginia.cs.edu.piapp.FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
 import static cs4720.virginia.cs.edu.piapp.FeedReaderContract.FeedEntry.TABLE_NAME;
 
 
-public class MainActivity extends Activity  {
+public class MainActivity extends Activity {
     Activity activity;
+    private ShakeDetector mShakeDetector;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
 
     /** Called when the activity is first created. */
     @Override
@@ -55,25 +59,43 @@ public class MainActivity extends Activity  {
 //            tx.setBackgroundColor(Color.GREEN);
         }
         populateList();
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
+            @Override
+            public void onShake() {
+                FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
+                String sortOrder =COLUMN_NAME_TITLE + " DESC";
+                Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
+                int numOfRows = c.getCount();
+
+                Random rand = new Random();
+                int randomListPosition = rand.nextInt(numOfRows);
+                c.moveToPosition(randomListPosition);
+
+                String json = c.getString(1);
+                makePostRequest(json);
+                Toast.makeText(getApplicationContext(), "Now Showing: " + c.getString(0), Toast.LENGTH_LONG)
+                        .show();
+                c.close();
+                db.close();
+            }
+        });
+
     }
 
 
-        //Should be used in Kristen's Add Light Show
-    private void addToDB(String json, String name) {
-        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_JSON, json);
-        values.put(COLUMN_NAME_TITLE, name);
-
-        db.insert(TABLE_NAME, null,values);
-        db.close();
+    @Override
+    protected void onPause() {
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
-
 
     private void populateList() {
-        //addToDB("hi there", "testing name");
-        //clearDB(); //if you remove this method, 'testing name' will show instead of fake data
+
+        //Update List from Database
         FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
@@ -92,8 +114,7 @@ public class MainActivity extends Activity  {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int itemPosition     = position;
-                String  itemValue    = (String) listView.getItemAtPosition(position);
+                String itemValue = (String) listView.getItemAtPosition(position);
                 Toast.makeText(getApplicationContext(), "Now Showing: " + itemValue, Toast.LENGTH_LONG)
                         .show();
                 FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
@@ -108,11 +129,6 @@ public class MainActivity extends Activity  {
                     json = c.getString(1);
                 } else {
                     json = "";
-//                    try {
-//                        //json.put("test", "one");
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
                 }
 
                 makePostRequest(json);
@@ -121,16 +137,6 @@ public class MainActivity extends Activity  {
                 db.close();
             }
         });
-    }
-
-    public JSONObject parseJson(String json) {
-
-        try {
-            return new JSONObject(json);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return new JSONObject();
     }
 
     public boolean isConnected(){
@@ -190,12 +196,12 @@ public class MainActivity extends Activity  {
       //Possibly use something like this when deleting a light show
      // will clear database if necessary
 
-    private void clearDB() {
-        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        db.delete(TABLE_NAME, null, null);
-        db.close();
-    }
+//    private void clearDB() {
+//        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
+//        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+//        db.delete(TABLE_NAME, null, null);
+//        db.close();
+//    }
 
     private void setButtonListeners() {
         final Button updateIpButton = (Button) findViewById(R.id.popupbutton);
@@ -227,57 +233,8 @@ public class MainActivity extends Activity  {
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
-
-        //Update List from Database
-        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
-        String sortOrder =COLUMN_NAME_TITLE + " DESC";
-        Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
-        final ListView listView = (ListView) findViewById(R.id.list);
-        int numOfRows = c.getCount();
-        String[] list_values = getNames(numOfRows, c);
-        c.close();
-        db.close();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, list_values);
-
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int itemPosition = position;
-                String itemValue = (String) listView.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(), "Now Showing: " + itemValue, Toast.LENGTH_LONG)
-                        .show();
-                FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
-                SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-                String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
-                String sortOrder =COLUMN_NAME_TITLE + " DESC";
-                Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
-                String json;
-                if (c.getCount() > 0) {
-                    c.moveToPosition(position);
-                    json = c.getString(1);
-                } else {
-                    json = "";
-//                    try {
-//                        json.put("test", "one");
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-                }
-
-                makePostRequest(json);
-
-                c.close();
-                db.close();
-            }
-        });
-
-
+        populateList();
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     private void openIpDialog(View view) {
