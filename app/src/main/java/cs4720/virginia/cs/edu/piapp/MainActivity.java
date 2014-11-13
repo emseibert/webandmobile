@@ -81,8 +81,17 @@ public class MainActivity extends Activity {
 
                     String json = c.getString(1);
                     makePostRequest(json);
-                    Toast.makeText(getApplicationContext(), "Now Showing: " + c.getString(0), Toast.LENGTH_LONG)
-                            .show();
+                    if (current_img != null) {
+                        current_img.setVisibility(View.INVISIBLE);
+                    }
+
+                    final ListView listView = (ListView) findViewById(R.id.list);
+
+                    current_img = (ImageView) listView.getChildAt(randomListPosition).findViewById(R.id.light_bulb);
+                    current_img.setVisibility(View.VISIBLE);
+
+//                    Toast.makeText(getApplicationContext(), "Now Showing: " + c.getString(0), Toast.LENGTH_LONG)
+//                            .show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Now", Toast.LENGTH_LONG).show();
                 }
@@ -121,8 +130,8 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String itemValue = (String) listView.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(), "Now Showing: " + itemValue, Toast.LENGTH_LONG)
-                        .show();
+//                Toast.makeText(getApplicationContext(), "Now Showing: " + itemValue, Toast.LENGTH_LONG)
+//                        .show();
                 FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
