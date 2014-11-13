@@ -108,8 +108,7 @@ public class MainActivity extends Activity {
         String[] list_values = getNames(numOfRows, c);
         c.close();
         db.close();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, list_values);
+        LightShowArrayAdapter adapter = new LightShowArrayAdapter(this, list_values);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -155,9 +154,11 @@ public class MainActivity extends Activity {
             @Override
             public HttpUriRequest getHttpRequestMethod() {
                 TextView tx = (TextView) findViewById(R.id.textView);
-                String url = tx.getText().toString().split("Current Ip Address: ")[1];
+                String url = tx.getText().toString().split("Current IP Address: ")[0];
                 //HttpPost p = new HttpPost("http://" + url + "/rpi");
-                HttpPost p = new HttpPost("http://requestb.in/1jfmjcw1");
+                HttpPost p = new HttpPost("http://192.168.2.44/rpi");
+                //HttpPost p = new HttpPost("http://requestb.in/yxficvyx");
+
                 p.addHeader("Content-type", "application/json");
 
 
@@ -250,7 +251,9 @@ public class MainActivity extends Activity {
                 String value = input.getText().toString().trim();
                 TextView tx = (TextView) findViewById(R.id.textView);
                 tx.setText("Current IP Address: " + value);
-                Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+                String url = tx.getText().toString().replace("Current IP Address: ","");
+                url = "http://" + url + "/rpi";
+                Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
             }
         });
 
