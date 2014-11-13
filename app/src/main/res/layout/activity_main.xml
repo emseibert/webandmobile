@@ -93,6 +93,14 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent">
                 </ListView>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete_row"
+                    android:id="@+id/delete_row"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true" />
             </RelativeLayout>
         </LinearLayout>
 

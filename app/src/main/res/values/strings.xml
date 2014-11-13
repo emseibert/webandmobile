@@ -7,5 +7,6 @@
     <string name="lightshow">Light Show</string>
     <string name="add_new_light">+</string>
     <string name="action_settings">Settings</string>
+    <string name="delete_row">Delete first row</string>
 
 </resources>
