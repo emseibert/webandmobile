@@ -12,11 +12,14 @@ import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -295,5 +298,54 @@ public class MainActivity extends Activity {
         AlertDialog alertDialog = alertDialogBuilder.create();
 
         alertDialog.show();
+    }
+
+
+
+    public class LightShowArrayAdapter extends ArrayAdapter<String> {
+        private final Context context;
+        private final String[] values;
+
+        public LightShowArrayAdapter(Context context, String[] values) {
+            super(context, R.layout.list_view, values);
+            this.context = context;
+            this.values = values;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.list_view, parent, false);
+            final TextView textView = (TextView) rowView.findViewById(R.id.label);
+            ImageButton btn_cancel = (ImageButton) rowView.findViewById(R.id.btn_cancel);
+            textView.setText(values[position]);
+            final String name = values[position];
+            // change the icon for Windows and iPhone
+            String s = values[position];
+            btn_cancel.setFocusable(false);
+            btn_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
+                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                    String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
+                    String sortOrder =COLUMN_NAME_TITLE + " DESC";
+
+                    // Define 'where' part of query.
+                    String selection = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " LIKE ?";
+                    // Specify arguments in placeholder order.
+                    String val = textView.getText().toString();
+                    String[] selectionArgs = { String.valueOf(val) };
+
+                    db.delete(TABLE_NAME, selection, selectionArgs);
+
+                    db.close();
+
+                    populateList();
+                }
+            });
+            return rowView;
+        }
     }
 }
