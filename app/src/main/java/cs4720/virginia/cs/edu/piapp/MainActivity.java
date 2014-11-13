@@ -168,7 +168,7 @@ public class MainActivity extends Activity {
                 TextView tx = (TextView) findViewById(R.id.textView);
                 String url = tx.getText().toString().split("Current IP Address: ")[0];
                 //HttpPost p = new HttpPost("http://" + url + "/rpi");
-                HttpPost p = new HttpPost("http://192.168.2.44/rpi");
+                HttpPost p = new HttpPost("http://" + url + "/rpi");
                 //HttpPost p = new HttpPost("http://requestb.in/yxficvyx");
 
                 p.addHeader("Content-type", "application/json");

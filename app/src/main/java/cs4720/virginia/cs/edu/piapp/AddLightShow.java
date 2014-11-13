@@ -27,7 +27,8 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
     ArrayList<Integer> color_list = new ArrayList<Integer>(32);
     Activity activity;
     ColorPicker p;
-
+    boolean add_button_pressed = false;
+    Button changedButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +36,13 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
         setContentView(R.layout.activity_add_light_show);
         this.activity = this;
 
-        Button addColor = (Button) findViewById(R.id.btn_add_color);
+        final Button addColor = (Button) findViewById(R.id.btn_add_color);
         p = new ColorPicker(this.activity, AddLightShow.this, Color.WHITE);
 
         addColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                add_button_pressed = true;
                 p.show();
             }
         });
@@ -85,31 +87,44 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
     public void colorChanged(int color) {
         //Get
         FlowLayout fl = (FlowLayout)this.findViewById(R.id.flowlayout);
+        Button addButton = (Button) findViewById(R.id.btn_add_color);
+        final Button myButton = new Button(this);
+        final int col = color;
+        if (add_button_pressed) {
+            //Remove 'Add' button from view
+            fl.removeView(addButton);
 
-        //Remove 'Add' button from view
-        Button addButton = (Button)findViewById(R.id.btn_add_color);
-        fl.removeView(addButton);
+            //Create new color button
+            myButton.setText("");
+            myButton.setId(num_colors + 1);
+            myButton.setBackgroundColor(color);
+            myButton.setHeight(90);
+            myButton.setWidth(90);
+            myButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changedButton = myButton;
+                    p.show();
+                }
+            });
 
-        //Create new color button
-        Button myButton = new Button(this);
-        myButton.setText("");
-        myButton.setId(num_colors + 1);
-        myButton.setBackgroundColor(color);
-        myButton.setHeight(90);
-        myButton.setWidth(90);
-       
+            add_button_pressed = false;
+            //Add new color button to view
+            fl.addView(myButton);
 
-        //Add new color button to view
-        fl.addView(myButton);
+            //Re-add 'Add' button to view
+            fl.addView(addButton);
 
-        //Re-add 'Add' button to view
-        fl.addView(addButton);
+            //Increment color counter
+            color_list.add(color);
 
-        //Increment color counter
-        color_list.add(color);
-
-
-        num_colors = num_colors+1;
+            num_colors = num_colors+1;
+        } else {
+            //myButton.setBackgroundColor(color);]
+            changedButton.setBackgroundColor(color);
+            color_list.set(changedButton.getId(),color);
+            //myButton.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+        }
     }
 
     private void getLightShowName(){
@@ -140,6 +155,7 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
         alert.show();
 
     }
+
     private ArrayList<Integer> createRepeatingPattern(ArrayList<Integer> list){
         ArrayList<Integer> newList = new ArrayList<Integer>(32);
         while (newList.size() <32) {
@@ -150,6 +166,7 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
         }
         return newList;
     }
+
     private void saveLightShow(String name){
 
         //Add to database
