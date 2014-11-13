@@ -5,6 +5,18 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/light_bulb"
+        android:layout_gravity="right"
+        android:src="@drawable/light_bulb_icon"
+        android:scaleType="fitCenter"
+        android:padding="10dp"
+        android:focusable="false"
+        android:visibility="invisible"
+        android:focusableInTouchMode="false"
+        android:contentDescription="light bulb" />
 
     <TextView
         android:layout_width="562dp"

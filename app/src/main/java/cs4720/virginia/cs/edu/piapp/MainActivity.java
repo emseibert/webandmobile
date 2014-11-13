@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ public class MainActivity extends Activity {
     private ShakeDetector mShakeDetector;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
+    ImageView current_img;
 
     /** Called when the activity is first created. */
     @Override
@@ -136,6 +138,13 @@ public class MainActivity extends Activity {
                 }
 
                 makePostRequest(json);
+                //view.findViewById()
+                if (current_img != null) {
+                    current_img.setVisibility(View.INVISIBLE);
+                }
+
+                current_img = (ImageView) view.findViewById(R.id.light_bulb);
+                current_img.setVisibility(View.VISIBLE);
 
                 c.close();
                 db.close();
@@ -178,7 +187,8 @@ public class MainActivity extends Activity {
 
             @Override
             public void onResponse(String s) {
-
+//                ImageView img = (ImageView) findViewById(R.id.light_bulb);
+//                img.setVisibility(View.VISIBLE);
             }
         }.execute();
 
@@ -209,30 +219,10 @@ public class MainActivity extends Activity {
 //        db.close();
 //    }
 
-    private void deleteRow() {
-        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
-        String sortOrder =COLUMN_NAME_TITLE + " DESC";
-        Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
-        c.moveToFirst();
-
-        String name = c.getString(0);
-        db.delete(TABLE_NAME, COLUMN_NAME_TITLE + "= '" + name + "'", null);
-
-        Button b = (Button) findViewById(R.id.delete_row);
-        b.setText("Deleted: " + name);
-        c.close();
-        db.close();
-
-        populateList();
-
-    }
 
     private void setButtonListeners() {
         final Button updateIpButton = (Button) findViewById(R.id.popupbutton);
         final Button addNewLightShow = (Button) findViewById(R.id.button_add_new_light);
-        final Button deleteRow = (Button) findViewById(R.id.delete_row);
 
         updateIpButton.setOnClickListener(new View.OnClickListener() {
 
@@ -247,14 +237,6 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 addLightShow(v);
-            }
-        });
-
-        deleteRow.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                deleteRow();
             }
         });
 
