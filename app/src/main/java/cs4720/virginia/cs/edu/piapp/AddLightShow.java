@@ -120,10 +120,8 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
 
             num_colors = num_colors+1;
         } else {
-            //myButton.setBackgroundColor(color);]
             changedButton.setBackgroundColor(color);
             color_list.set(changedButton.getId(),color);
-            //myButton.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
         }
     }
 
