@@ -177,6 +177,7 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
         try {
             main.put("lights", lights);
             main.put("propagate", true);
+            main.put("chase", true);
             //StringEntity se = new StringEntity(main.toString());
             addToDB(main.toString(),name);
         } catch (JSONException e) {
