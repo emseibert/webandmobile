@@ -7,23 +7,16 @@ import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-
-import org.apache.http.entity.StringEntity;
 import org.apmem.tools.layouts.FlowLayout;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import static cs4720.virginia.cs.edu.piapp.FeedReaderContract.FeedEntry.COLUMN_NAME_JSON;
 import static cs4720.virginia.cs.edu.piapp.FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
@@ -44,6 +37,7 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
 
         Button addColor = (Button) findViewById(R.id.btn_add_color);
         p = new ColorPicker(this.activity, AddLightShow.this, Color.WHITE);
+
         addColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,25 +61,25 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
         });
 
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.add_light_show, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.add_light_show, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public void colorChanged(int color) {
@@ -103,6 +97,7 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
         myButton.setBackgroundColor(color);
         myButton.setHeight(90);
         myButton.setWidth(90);
+       
 
         //Add new color button to view
         fl.addView(myButton);
@@ -112,6 +107,7 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
 
         //Increment color counter
         color_list.add(color);
+
 
         num_colors = num_colors+1;
     }

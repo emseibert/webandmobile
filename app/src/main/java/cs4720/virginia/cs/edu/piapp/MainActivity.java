@@ -206,9 +206,30 @@ public class MainActivity extends Activity {
 //        db.close();
 //    }
 
+    private void deleteRow() {
+        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
+        String sortOrder =COLUMN_NAME_TITLE + " DESC";
+        Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
+        c.moveToFirst();
+
+        String name = c.getString(0);
+        db.delete(TABLE_NAME, COLUMN_NAME_TITLE + "= '" + name + "'", null);
+
+        Button b = (Button) findViewById(R.id.delete_row);
+        b.setText("Deleted: " + name);
+        c.close();
+        db.close();
+
+        populateList();
+
+    }
+
     private void setButtonListeners() {
         final Button updateIpButton = (Button) findViewById(R.id.popupbutton);
         final Button addNewLightShow = (Button) findViewById(R.id.button_add_new_light);
+        final Button deleteRow = (Button) findViewById(R.id.delete_row);
 
         updateIpButton.setOnClickListener(new View.OnClickListener() {
 
@@ -225,6 +246,15 @@ public class MainActivity extends Activity {
                 addLightShow(v);
             }
         });
+
+        deleteRow.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                deleteRow();
+            }
+        });
+
     }
 
     private void addLightShow(View v) {
