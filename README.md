@@ -6,7 +6,7 @@
 * Improved Functionality - Chasing, Blinking, and Randomized pattern (the radio buttons for this are set as not visible), this will include changes to the code.py file on the raspberry pi, these changes should result in a change in the json sent to the pi (Most likely including Chasing, Blinking, and Randomized like Propagated is currently in the JSON)
 * Improved UI - IP address should be stored in Settings (the upper right drop down menu)
 
-### Submission Instructions: 
+### Submission - Tuesday 11:55pm, November 25th
 * A zip of the android project
 * A .apk of the project posted to plato, this is found in the the app folder inside the project folder and is called 'app-release.apk' (Make sure it is using API 15)
 * Ensure that you can download and run the app successfully on the tablet
