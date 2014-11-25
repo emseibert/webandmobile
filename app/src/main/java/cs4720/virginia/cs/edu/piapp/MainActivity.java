@@ -13,6 +13,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -230,16 +232,7 @@ public class MainActivity extends Activity {
 
 
     private void setButtonListeners() {
-        final Button updateIpButton = (Button) findViewById(R.id.popupbutton);
         final Button addNewLightShow = (Button) findViewById(R.id.button_add_new_light);
-
-        updateIpButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                openIpDialog(v);
-            }
-        });
 
         addNewLightShow.setOnClickListener(new View.OnClickListener() {
 
@@ -263,34 +256,6 @@ public class MainActivity extends Activity {
         populateList();
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
-
-    private void openIpDialog(View view) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        final EditText input = new EditText(this);
-        alertDialogBuilder.setView(input);
-        alertDialogBuilder.setTitle("Update IP Address");
-
-        alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String value = input.getText().toString().trim();
-                TextView tx = (TextView) findViewById(R.id.textView);
-                tx.setText("Current IP Address: " + value);
-                String url = tx.getText().toString().replace("Current IP Address: ","");
-                url = "http://" + url + "/rpi";
-                Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        alertDialog.show();
-    }
-
 
 
     public class LightShowArrayAdapter extends ArrayAdapter<String> {
@@ -339,4 +304,62 @@ public class MainActivity extends Activity {
             return rowView;
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main_activity2, menu);
+        return true;
+    }
+
+    private void openIpDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        final EditText input = new EditText(this);
+        alertDialogBuilder.setView(input);
+        TextView tx = (TextView) findViewById(R.id.textView);
+        alertDialogBuilder.setTitle("IP Address");
+        alertDialogBuilder.setMessage("Current IP Address: " + tx.getText() + "\n \nNew IP Address:");
+
+        alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString().trim();
+                TextView tx = (TextView) findViewById(R.id.textView);
+                tx.setText(value);
+                String url = tx.getText().toString().trim();
+                url = "You updated your ip address to: \n" + url;
+                Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    openIpDialog();
+                    return true;
+                }
+            });
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

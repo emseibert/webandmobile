@@ -25,7 +25,6 @@ public class PopupDemoActivity extends Activity implements OnClickListener {
     }
 
     public void init() {
-        popupButton = (Button) findViewById(R.id.popupbutton);
         popupText = new TextView(this);
         insidePopupButton = new Button(this);
         layoutOfPopup = new LinearLayout(this);
@@ -46,12 +45,9 @@ public class PopupDemoActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.popupbutton) {
-            popupMessage.showAsDropDown(popupButton, 0, 0);
-        }
-        else {
-            popupMessage.dismiss();
-        }
+
+        popupMessage.dismiss();
+
     }
 }
 

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Pi App</string>
-    <string name="ipAddr">Current Ip Address: None</string>
+    <string name="ipAddr">None</string>
     <string name="submit">Change Pi Color</string>
     <string name="lightshow">Light Show</string>
     <string name="add_new_light">+</string>
@@ -12,5 +12,7 @@
     <string name="racing">Racing</string>
     <string name="randomize">Randomize</string>
     <string name="solid">Solid Pattern</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
