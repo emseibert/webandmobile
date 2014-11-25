@@ -175,7 +175,7 @@ public class MainActivity extends Activity {
             @Override
             public HttpUriRequest getHttpRequestMethod() {
                 TextView tx = (TextView) findViewById(R.id.textView);
-                String url = tx.getText().toString().split("Current IP Address: ")[0];
+                String url = tx.getText().toString().replace("Current IP Address: ","");
                 //HttpPost p = new HttpPost("http://" + url + "/rpi");
                 HttpPost p = new HttpPost("http://" + url + "/rpi");
                 //HttpPost p = new HttpPost("http://requestb.in/yxficvyx");
