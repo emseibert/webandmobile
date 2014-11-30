@@ -9,10 +9,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -57,10 +57,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         this.activity = this;
         setButtonListeners();
-        if (isConnected()) {
-//            TextView tx = (TextView) findViewById(R.id.textView2);
-//            tx.setBackgroundColor(Color.GREEN);
-        }
         populateList();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -90,10 +86,8 @@ public class MainActivity extends Activity {
                     current_img = (ImageView) listView.getChildAt(randomListPosition).findViewById(R.id.light_bulb);
                     current_img.setVisibility(View.VISIBLE);
 
-//                    Toast.makeText(getApplicationContext(), "Now Showing: " + c.getString(0), Toast.LENGTH_LONG)
-//                            .show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Now", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Add Light Shows!", Toast.LENGTH_LONG).show();
                 }
                 c.close();
                 db.close();
@@ -129,9 +123,6 @@ public class MainActivity extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String itemValue = (String) listView.getItemAtPosition(position);
-//                Toast.makeText(getApplicationContext(), "Now Showing: " + itemValue, Toast.LENGTH_LONG)
-//                        .show();
                 FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -147,7 +138,6 @@ public class MainActivity extends Activity {
                 }
 
                 makePostRequest(json);
-                //view.findViewById()
                 if (current_img != null) {
                     current_img.setVisibility(View.INVISIBLE);
                 }
@@ -161,25 +151,13 @@ public class MainActivity extends Activity {
         });
     }
 
-    public boolean isConnected(){
-    ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
-    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-    if (networkInfo != null && networkInfo.isConnected())
-        return true;
-    else
-        return false;
-    }
-
     public void makePostRequest(final String json) {
         new HttpHandler() {
             @Override
             public HttpUriRequest getHttpRequestMethod() {
                 TextView tx = (TextView) findViewById(R.id.textView);
-                String url = tx.getText().toString().replace("Current IP Address: ","");
-                //HttpPost p = new HttpPost("http://" + url + "/rpi");
+                String url = tx.getText().toString().trim();
                 HttpPost p = new HttpPost("http://" + url + "/rpi");
-                //HttpPost p = new HttpPost("http://requestb.in/yxficvyx");
-
                 p.addHeader("Content-type", "application/json");
 
 
@@ -196,8 +174,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onResponse(String s) {
-//                ImageView img = (ImageView) findViewById(R.id.light_bulb);
-//                img.setVisibility(View.VISIBLE);
+
             }
         }.execute();
 
@@ -207,7 +184,7 @@ public class MainActivity extends Activity {
         ArrayList<String> names = new ArrayList<String>();
 
         if (numOfRows == 0) {
-            String[] fake_data = {"Light Show 1", "Light Show 2"};
+            String[] fake_data = {};
             return fake_data;
         } else {
             for (int i = 0; i < numOfRows; i++) {
@@ -218,29 +195,9 @@ public class MainActivity extends Activity {
             return names.toArray(new String[names.size()]);
         }
     }
-      //Possibly use something like this when deleting a light show
-     // will clear database if necessary
-
-//    private void clearDB() {
-//        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
-//        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-//        db.delete(TABLE_NAME, null, null);
-//        db.close();
-//    }
-
 
     private void setButtonListeners() {
-        final Button updateIpButton = (Button) findViewById(R.id.popupbutton);
         final Button addNewLightShow = (Button) findViewById(R.id.button_add_new_light);
-
-        updateIpButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                openIpDialog(v);
-            }
-        });
-
         addNewLightShow.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -263,34 +220,6 @@ public class MainActivity extends Activity {
         populateList();
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
-
-    private void openIpDialog(View view) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        final EditText input = new EditText(this);
-        alertDialogBuilder.setView(input);
-        alertDialogBuilder.setTitle("Update IP Address");
-
-        alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String value = input.getText().toString().trim();
-                TextView tx = (TextView) findViewById(R.id.textView);
-                tx.setText("Current IP Address: " + value);
-                String url = tx.getText().toString().replace("Current IP Address: ","");
-                url = "http://" + url + "/rpi";
-                Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        alertDialog.show();
-    }
-
 
 
     public class LightShowArrayAdapter extends ArrayAdapter<String> {
@@ -320,8 +249,6 @@ public class MainActivity extends Activity {
                 public void onClick(View v) {
                     FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
                     SQLiteDatabase db = mDbHelper.getWritableDatabase();
-                    String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
-                    String sortOrder =COLUMN_NAME_TITLE + " DESC";
 
                     // Define 'where' part of query.
                     String selection = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " LIKE ?";
@@ -339,4 +266,67 @@ public class MainActivity extends Activity {
             return rowView;
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main_activity2, menu);
+        return true;
+    }
+
+    private void openIpDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        final EditText input = new EditText(this);
+        alertDialogBuilder.setView(input);
+        TextView tx = (TextView) findViewById(R.id.textView);
+        alertDialogBuilder.setTitle("IP Address");
+        alertDialogBuilder.setMessage("Current IP Address: " + tx.getText() + "\n \nNew IP Address:");
+
+        alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString().trim();
+                TextView tx = (TextView) findViewById(R.id.textView);
+                tx.setText(value);
+                String url = tx.getText().toString().trim();
+                url = "You updated your ip address to: \n" + url;
+                Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        final int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.action_settings).setVisible(true);
+        menu.findItem(R.id.action_settings).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                openIpDialog();
+                return true;
+            }
+        });
+        return true;
+    }
+
 }

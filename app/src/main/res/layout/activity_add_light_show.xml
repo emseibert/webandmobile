@@ -61,42 +61,6 @@
                 android:layout_gravity="center_horizontal"
             android:visibility="invisible" />
 
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <RadioButton
-                android:layout_width="154dp"
-                android:layout_height="wrap_content"
-                android:text="@string/blinking"
-                android:id="@+id/radioButton"
-                android:layout_gravity="center_horizontal"
-                android:textSize="25dp" />
-
-            <RadioButton
-                android:layout_width="156dp"
-                android:layout_height="wrap_content"
-                android:text="@string/racing"
-                android:id="@+id/radioButton2"
-                android:layout_gravity="center_horizontal"
-                android:textSize="25dp" />
-
-            <RadioButton
-                android:layout_width="168dp"
-                android:layout_height="match_parent"
-                android:text="@string/randomize"
-                android:id="@+id/radioButton3"
-                android:layout_gravity="center_horizontal"
-                android:textSize="25dp" />
-
-            <RadioButton
-                android:layout_width="194dp"
-                android:layout_height="wrap_content"
-                android:text="@string/solid"
-                android:id="@+id/radioButton4"
-                android:layout_gravity="center_horizontal"
-                android:textSize="25dp" />
-        </RadioGroup>
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
