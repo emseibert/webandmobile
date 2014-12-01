@@ -29,6 +29,10 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px" />
+
         <org.apmem.tools.layouts.FlowLayout
             xmlns:f="http://schemas.android.com/apk/res/cs4720.virginia.cs.edu.piapp"
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,17 +53,6 @@
             android:text="+"
             android:textSize="40sp" />
     </org.apmem.tools.layouts.FlowLayout>
-
-        <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Racing Colors"
-                android:id="@+id/chkBx_Racing"
-                android:checked="false"
-                android:textSize="40sp"
-                android:layout_marginTop="50dp"
-                android:layout_gravity="center_horizontal"
-            android:visibility="invisible" />
 
         <RelativeLayout
             android:orientation="horizontal"

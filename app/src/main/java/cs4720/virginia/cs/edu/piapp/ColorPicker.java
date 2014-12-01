@@ -49,11 +49,16 @@ public class ColorPicker extends Dialog {
         protected void onDraw(Canvas canvas) {
             float r = CENTER_X - mPaint.getStrokeWidth()*0.5f;
 
-            canvas.translate(CENTER_X, CENTER_X);
-
+            canvas.translate(CENTER_X+25, CENTER_Y+10);
+            Paint outline = new Paint();
+            outline.setColor(Color.LTGRAY);
             canvas.drawOval(new RectF(-r, -r, r, r), mPaint);
+            canvas.drawCircle(0,0,CENTER_RADIUS+2, outline);
             canvas.drawCircle(0, 0, CENTER_RADIUS, mCenterPaint);
-
+            Paint pnt = new Paint();
+            pnt.setColor(Color.BLACK);
+            pnt.setTextSize(15);
+            canvas.drawText("Select",-20,5, pnt);
             if (mTrackingCenter) {
                 int c = mCenterPaint.getColor();
                 mCenterPaint.setStyle(Paint.Style.STROKE);
@@ -72,9 +77,13 @@ public class ColorPicker extends Dialog {
             }
         }
 
+
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            setMeasuredDimension(CENTER_X*2, CENTER_Y*2);
+            int width = (int)(CENTER_X*2.5);
+            int height = (int)(CENTER_Y*2.5);
+
+            setMeasuredDimension(width, height);
         }
 
         private static final int CENTER_X = 100;
@@ -213,6 +222,7 @@ public class ColorPicker extends Dialog {
         };
 
         setContentView(new ColorPickerView(getContext(), l, mInitialColor));
+        getWindow().setLayout(270,300);
         setTitle("Pick a Color");
     }
 }

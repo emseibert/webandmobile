@@ -38,7 +38,7 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
 
         final Button addColor = (Button) findViewById(R.id.btn_add_color);
         p = new ColorPicker(this.activity, AddLightShow.this, Color.WHITE);
-
+        p.getWindow().setLayout(50,50);
         addColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
