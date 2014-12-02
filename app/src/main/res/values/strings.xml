@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Lights Show</string>
+    <string name="app_name">Light Show</string>
     <string name="ipAddr">None</string>
     <string name="submit">Change Pi Color</string>
     <string name="lightshow">Light Show</string>
