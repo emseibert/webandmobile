@@ -78,7 +78,7 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
 
             //Create new color button
             myButton.setText("");
-            myButton.setId(num_colors + 1);
+            myButton.setId(num_colors);
             myButton.setBackgroundColor(color);
             myButton.setHeight(90);
             myButton.setWidth(90);

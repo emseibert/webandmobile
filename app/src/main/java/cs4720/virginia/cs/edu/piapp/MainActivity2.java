@@ -69,8 +69,10 @@ public class MainActivity2 extends Activity {
                 String sortOrder =COLUMN_NAME_TITLE + " DESC";
                 Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
                 int numOfRows = c.getCount();
+                TextView tx = (TextView) findViewById(R.id.textView);
+                String ipAddr = tx.getText().toString().trim();
 
-                if (numOfRows > 0) {
+                if ((numOfRows > 0) && !(ipAddr.equals("None"))) {
                     Random rand = new Random();
                     int randomListPosition = rand.nextInt(numOfRows);
                     c.moveToPosition(randomListPosition);
@@ -86,8 +88,10 @@ public class MainActivity2 extends Activity {
                     current_img = (ImageView) listView.getChildAt(randomListPosition).findViewById(R.id.light_bulb);
                     current_img.setVisibility(View.VISIBLE);
 
-                } else {
+                } else if (numOfRows == 0) {
                     Toast.makeText(getApplicationContext(), "Add Light Shows!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Your IP Address is set to 'NONE'", Toast.LENGTH_LONG).show();
                 }
                 c.close();
                 db.close();
@@ -124,30 +128,45 @@ public class MainActivity2 extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
-                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                SQLiteDatabase db2 = mDbHelper.getWritableDatabase();
 
                 String[] projection = {COLUMN_NAME_TITLE, COLUMN_NAME_JSON};
                 String sortOrder =COLUMN_NAME_TITLE + " DESC";
-                Cursor c = db.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
+                Cursor c2 = db2.query(TABLE_NAME, projection, null, null, null, null, sortOrder);
                 String json;
-                if (c.getCount() > 0) {
-                    c.moveToPosition(position);
-                    json = c.getString(1);
+                TextView tx = (TextView) findViewById(R.id.textView);
+                String ipAddr = tx.getText().toString().trim();
+                if (ipAddr.equals("None")) {
+                    if (current_img != null) {
+                        current_img.setVisibility(View.INVISIBLE);
+                    }
+                    Toast.makeText(getApplicationContext(), "Your IP Address is set to 'NONE'", Toast.LENGTH_LONG).show();
+//                    c.close();
+//                    db.close();
+
                 } else {
-                    json = "";
+                    if (c2.getCount() > 0) {
+                        c2.moveToPosition(position);
+                        json = c2.getString(1);
+                    } else {
+                        json = "";
+                    }
+
+                    makePostRequest(json);
+                    if (current_img != null) {
+                        current_img.setVisibility(View.INVISIBLE);
+                    }
+
+                    current_img = (ImageView) view.findViewById(R.id.light_bulb);
+                    current_img.setVisibility(View.VISIBLE);
+//                    c.close();
+//                    db.close();
                 }
 
-                makePostRequest(json);
-                if (current_img != null) {
-                    current_img.setVisibility(View.INVISIBLE);
-                }
-
-                current_img = (ImageView) view.findViewById(R.id.light_bulb);
-                current_img.setVisibility(View.VISIBLE);
-
-                c.close();
-                db.close();
+                c2.close();
+                db2.close();
             }
+
         });
     }
 
