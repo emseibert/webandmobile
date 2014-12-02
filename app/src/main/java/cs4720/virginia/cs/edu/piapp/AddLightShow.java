@@ -162,7 +162,7 @@ public class AddLightShow extends Activity implements ColorPicker.OnColorChanged
                 lightId.put("red", Color.red(c));
                 lightId.put("green", Color.green(c));
                 lightId.put("blue", Color.blue(c));
-                lightId.put("intensity", 60);
+                lightId.put("intensity", 0.60);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

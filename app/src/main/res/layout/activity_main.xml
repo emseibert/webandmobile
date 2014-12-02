@@ -34,20 +34,6 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_gravity="left|top" />
 
-                <Button android:id="@+id/popupbutton"
-                    android:layout_width="wrap_content"
-
-                    android:layout_marginLeft="190dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="Update"
-                    android:layout_gravity="left|top"
-                    android:shadowColor="#ff808080"
-                    android:textStyle="bold|normal"
-                    android:typeface="normal"
-                    android:background="#AFDEFE"
-                    android:textColor="#303040"
-                    android:padding="3dp" />
             </RelativeLayout>
 
             <RelativeLayout
