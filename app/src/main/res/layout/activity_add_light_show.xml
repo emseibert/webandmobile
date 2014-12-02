@@ -7,6 +7,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="cs4720.virginia.cs.edu.piapp.AddLightShow"
+    android:background="#303040"
     android:id="@+id/add_pattern_view">
 
     <!--<cs4720.virginia.cs.edu.piapp.LightStrip
@@ -27,7 +28,8 @@
 
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:background="#303040">
 
         <Space
             android:layout_width="20px"
@@ -43,16 +45,16 @@
 
 
             <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:id="@+id/btn_add_color"
-            android:background="#ffa3a3a1"
-            android:layout_gravity="bottom"
-
-            android:text="+"
-            android:textSize="40sp" />
-    </org.apmem.tools.layouts.FlowLayout>
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:id="@+id/btn_add_color"
+                android:background="#AFDEFE"
+                android:layout_gravity="bottom"
+                android:text="+"
+                android:textColor="#303040"
+                android:textSize="40sp" />
+        </org.apmem.tools.layouts.FlowLayout>
 
         <RelativeLayout
             android:orientation="horizontal"
@@ -71,15 +73,29 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
                     android:text="Cancel"
+                    android:textColor="#303040"
+                    android:background="#AFDEFE"
+
                     android:id="@+id/btn_Cancel"
                     android:textSize="40sp"/>
                 <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Save As..."
-                        android:id="@+id/btn_Save"
-                        android:textSize="40sp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#AFDEFE"
+                    android:text="Save As..."
+                    android:textColor="#303040"
+                    android:id="@+id/btn_Save"
+                    android:textSize="40sp"
+                    android:longClickable="false" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

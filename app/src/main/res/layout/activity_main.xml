@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:background="#FFFFFFFF">
+    android:background="#303040">
 
     <!--<FrameLayout-->
         <!--android:layout_width="fill_parent"-->
@@ -26,15 +26,28 @@
                     android:id="@+id/textView"
                     android:textStyle="bold"
                     android:textIsSelectable="false"
-                    android:textColor="#ff0c0c0c"
+                    android:textColor="#AFDEFE"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="15dp"
                     android:layout_marginTop="10dp"
-                    android:visibility="invisible"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_gravity="left|top" />
 
+                <Button android:id="@+id/popupbutton"
+                    android:layout_width="wrap_content"
+
+                    android:layout_marginLeft="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Update"
+                    android:layout_gravity="left|top"
+                    android:shadowColor="#ff808080"
+                    android:textStyle="bold|normal"
+                    android:typeface="normal"
+                    android:background="#AFDEFE"
+                    android:textColor="#303040"
+                    android:padding="3dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -50,11 +63,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="#AFDEFE"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/lightshow"
+                        android:text="@string/app_name"
                         android:id="@+id/textView2"
                         android:layout_gravity="center_horizontal|top"
-                        android:textSize="50dp"
+                        android:textSize="48sp"
+
                         android:layout_marginRight="15dp" />
 
 
@@ -66,8 +81,8 @@
                         android:id="@+id/button_add_new_light"
                         android:layout_gravity="left|top"
                         android:textSize="50dp"
-                        android:background="#ff2f8eff"
-                        android:textColor="#ffffff" />
+                        android:background="#AFDEFE"
+                        android:textColor="#303040" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -77,8 +92,10 @@
 
                 <ListView
                     android:id="@+id/list"
+
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
+                    android:layout_width="match_parent"
+                    android:textColor="#AFDEFE">
                 </ListView>
             </RelativeLayout>
         </LinearLayout>

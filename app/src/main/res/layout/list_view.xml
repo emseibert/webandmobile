@@ -14,6 +14,7 @@
         android:scaleType="fitCenter"
         android:padding="10dp"
         android:focusable="false"
+
         android:visibility="invisible"
         android:focusableInTouchMode="false"
         android:contentDescription="light bulb" />
@@ -21,6 +22,7 @@
     <TextView
         android:layout_width="562dp"
         android:layout_height="50dp"
+        android:textColor="#AFDEFE"
         android:text="New Text"
         android:id="@+id/label"
         android:textSize="30sp"
