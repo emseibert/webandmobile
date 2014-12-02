@@ -25,6 +25,7 @@
                     android:layout_height="59dp"
                     android:id="@+id/textView"
                     android:textStyle="bold"
+                    android:visibility="invisible"
                     android:textIsSelectable="false"
                     android:textColor="#AFDEFE"
                     android:layout_marginLeft="15dp"
