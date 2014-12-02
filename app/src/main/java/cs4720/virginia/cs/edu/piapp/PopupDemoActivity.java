@@ -45,7 +45,6 @@ public class PopupDemoActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-
         popupMessage.dismiss();
 
     }
